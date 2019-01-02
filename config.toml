@@ -4,7 +4,7 @@ desc = "sample configuration for tidis"
 
 [tidis]
 
-listen = ":7379"
+listen = ":5379"
 max_connection = 5000
 
 #expiration checker
@@ -27,10 +27,10 @@ zset_checker_interval = 100
 # if you have few key to expire, please set it to false
 ttl_checker_lazy = false
 
-loglevel = "debug"
+loglevel = "info"
 
 #transaction retry count when commit failed in case of conflict
-txn_retry = 2
+txn_retry = 5
 
 auth = ""
 
