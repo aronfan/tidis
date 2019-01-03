@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/yongman/tidis.svg?branch=master)](https://travis-ci.org/yongman/tidis)
+[![Build Status](https://travis-ci.org/aronfan/tidis.svg?branch=master)](https://travis-ci.org/aronfan/tidis)
 [![Go Report Card](https://goreportcard.com/badge/github.com/yongman/tidis)](https://goreportcard.com/report/github.com/yongman/tidis)
 ![Project Status](https://img.shields.io/badge/status-alpha-yellow.svg)
 
@@ -36,26 +36,26 @@ Any pull requests are welcomed.
 ## 1. Run tidis with docker-compose in one command
 
 ```
-git clone https://github.com/yongman/tidis-docker-compose.git
+git clone https://github.com/aronfan/tidis-docker-compose.git
 cd tidis-docker-compose/
 docker-compose up -d
 ```
 
-Or follow [tidis-docker-compose](https://github.com/yongman/tidis-docker-compose) guide to run with `docker-compose`
+Or follow [tidis-docker-compose](https://github.com/aronfan/tidis-docker-compose) guide to run with `docker-compose`
 
 ## 2. Build or Docker mannually
 
 ### Build from source
 
 ```
-git clone https://github.com/yongman/tidis.git
+git clone https://github.com/aronfan/tidis.git
 cd tidis && make
 ```
 
 ### Pull from docker
 
 ```
-docker pull yongman/tidis
+docker pull aronfan/tidis
 ```
 
 ### Run TiKV cluster for test
@@ -73,7 +73,7 @@ bin/tidis-server -conf config.toml
 #### Run tidis from docker
 
 ```
-docker run  -d --name tidis -p 5379:5379 -v {your_config_dir}:/data yongman/tidis -conf="/data/config.toml"
+docker run  -d --name tidis -p 5379:5379 -v {your_config_dir}:/data aronfan/tidis -conf="/data/config.toml"
 ```
 
 ## 3. Client request
