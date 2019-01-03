@@ -11,10 +11,10 @@ import (
 	"math"
 	"time"
 
+	ti "github.com/aronfan/tidis/store/tikv"
+	"github.com/aronfan/tidis/terror"
 	"github.com/pingcap/tidb/kv"
 	"github.com/yongman/go/log"
-	ti "github.com/yongman/tidis/store/tikv"
-	"github.com/yongman/tidis/terror"
 )
 
 // check a ttl value is expired

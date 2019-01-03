@@ -11,8 +11,8 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/aronfan/tidis/config"
 	"github.com/pingcap/tidb/kv"
-	"github.com/yongman/tidis/config"
 )
 
 func TestNext(t *testing.T) {

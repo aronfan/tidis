@@ -13,9 +13,9 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/aronfan/tidis/config"
+	"github.com/aronfan/tidis/server"
 	"github.com/yongman/go/log"
-	"github.com/yongman/tidis/config"
-	"github.com/yongman/tidis/server"
 )
 
 var (

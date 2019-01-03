@@ -11,9 +11,9 @@ import (
 	"net"
 	"sync"
 
+	"github.com/aronfan/tidis/config"
+	"github.com/aronfan/tidis/tidis"
 	"github.com/yongman/go/log"
-	"github.com/yongman/tidis/config"
-	"github.com/yongman/tidis/tidis"
 )
 
 type App struct {

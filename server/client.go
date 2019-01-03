@@ -17,11 +17,11 @@ import (
 
 	"context"
 
+	"github.com/aronfan/tidis/terror"
+	"github.com/aronfan/tidis/tidis"
 	"github.com/pingcap/tidb/kv"
 	"github.com/yongman/go/goredis"
 	"github.com/yongman/go/log"
-	"github.com/yongman/tidis/terror"
-	"github.com/yongman/tidis/tidis"
 )
 
 type Command struct {

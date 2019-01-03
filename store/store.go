@@ -8,8 +8,8 @@
 package store
 
 import (
-	"github.com/yongman/tidis/config"
-	"github.com/yongman/tidis/store/tikv"
+	"github.com/aronfan/tidis/config"
+	"github.com/aronfan/tidis/store/tikv"
 )
 
 func init() {

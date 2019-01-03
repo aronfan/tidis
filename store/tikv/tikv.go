@@ -15,11 +15,11 @@ import (
 
 	"context"
 
+	"github.com/aronfan/tidis/config"
+	"github.com/aronfan/tidis/terror"
 	"github.com/pingcap/tidb/kv"
 	ti "github.com/pingcap/tidb/store/tikv"
 	"github.com/yongman/go/log"
-	"github.com/yongman/tidis/config"
-	"github.com/yongman/tidis/terror"
 )
 
 type Tikv struct {

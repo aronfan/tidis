@@ -10,9 +10,9 @@ package tidis
 import (
 	"time"
 
+	"github.com/aronfan/tidis/terror"
 	"github.com/pingcap/tidb/kv"
 	"github.com/yongman/go/log"
-	"github.com/yongman/tidis/terror"
 
 	"github.com/deckarep/golang-set"
 )

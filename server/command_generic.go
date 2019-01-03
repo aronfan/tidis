@@ -8,9 +8,9 @@
 package server
 
 import (
+	"github.com/aronfan/tidis/terror"
+	"github.com/aronfan/tidis/tidis"
 	"github.com/yongman/go/util"
-	"github.com/yongman/tidis/terror"
-	"github.com/yongman/tidis/tidis"
 )
 
 func pexpireGeneric(c *Client, t byte) error {

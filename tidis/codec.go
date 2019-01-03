@@ -8,8 +8,8 @@
 package tidis
 
 import (
+	"github.com/aronfan/tidis/terror"
 	"github.com/yongman/go/util"
-	"github.com/yongman/tidis/terror"
 )
 
 // encoder and decoder for key of data

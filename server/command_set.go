@@ -8,8 +8,8 @@
 package server
 
 import (
-	"github.com/yongman/tidis/terror"
-	"github.com/yongman/tidis/tidis"
+	"github.com/aronfan/tidis/terror"
+	"github.com/aronfan/tidis/tidis"
 )
 
 func init() {

@@ -12,10 +12,10 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/aronfan/tidis/terror"
 	"github.com/pingcap/tidb/kv"
 	"github.com/yongman/go/log"
 	"github.com/yongman/go/util"
-	"github.com/yongman/tidis/terror"
 )
 
 var (

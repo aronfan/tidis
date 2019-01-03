@@ -12,9 +12,9 @@ package tidis
 import (
 	"sync"
 
+	"github.com/aronfan/tidis/config"
+	"github.com/aronfan/tidis/store"
 	"github.com/deckarep/golang-set"
-	"github.com/yongman/tidis/config"
-	"github.com/yongman/tidis/store"
 )
 
 type Tidis struct {
