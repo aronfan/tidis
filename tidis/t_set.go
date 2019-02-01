@@ -451,9 +451,12 @@ func (tidis *Tidis) Sops(txn interface{}, opType int, keys ...[]byte) ([]interfa
 
 	var opSet mapset.Set
 
-	for i, ms1 := range mss {
+	for _, ms1 := range mss {
+		if ms1 == nil {
+			continue
+		}
 		ms := ms1.(mapset.Set)
-		if i == 0 {
+		if opSet == nil {
 			opSet = ms
 		} else {
 			switch opType {
@@ -470,6 +473,9 @@ func (tidis *Tidis) Sops(txn interface{}, opType int, keys ...[]byte) ([]interfa
 		}
 	}
 
+	if opSet == nil {
+		opSet = mapset.NewSet()
+	}
 	return opSet.ToSlice(), nil
 }
 
