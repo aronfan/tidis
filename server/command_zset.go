@@ -560,6 +560,9 @@ func zrevrankCommand(c *Client) error {
 
 	if exist {
 		r := int64(count) - 1 - v
+		if r < 0 {
+			r = 0
+		}
 		str := strconv.AppendInt([]byte(nil), r, 10)
 		return c.Resp(str)
 	} else {
