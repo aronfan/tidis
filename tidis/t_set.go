@@ -449,13 +449,22 @@ func (tidis *Tidis) Sops(txn interface{}, opType int, keys ...[]byte) ([]interfa
 		return nil, err
 	}
 
-	var opSet mapset.Set
+	var (
+		opSet mapset.Set = nil
+		i     int
+	)
 
-	for i, ms1 := range mss {
-		ms := ms1.(mapset.Set)
+	for j, ms1 := range mss {
+		if j == 0 && ms1 == nil && opType == opDiff {
+			return make([]interface{}, 0), nil
+		}
+		if ms1 == nil {
+			continue
+		}
 		if i == 0 {
-			opSet = ms
+			opSet = ms1
 		} else {
+			ms := ms1.(mapset.Set)
 			switch opType {
 			case opDiff:
 				opSet = opSet.Difference(ms)
@@ -468,6 +477,10 @@ func (tidis *Tidis) Sops(txn interface{}, opType int, keys ...[]byte) ([]interfa
 				break
 			}
 		}
+		i++
+	}
+	if opSet == nil {
+		return make([]interface{}, 0), nil
 	}
 
 	return opSet.ToSlice(), nil
@@ -629,7 +642,7 @@ func (tidis *Tidis) SopsStore(opType int, dest []byte, keys ...[]byte) (uint64, 
 
 func (tidis *Tidis) SopsStoreWithTxn(txn interface{}, opType int, dest []byte, keys ...[]byte) (uint64, error) {
 	if len(dest) == 0 || len(keys) == 0 {
-		return 0, terror.ErrKeyEmpty
+		return uint64(0), terror.ErrKeyEmpty
 	}
 
 	eDestMetaKey := SMetaEncoder(dest)
@@ -638,13 +651,13 @@ func (tidis *Tidis) SopsStoreWithTxn(txn interface{}, opType int, dest []byte, k
 	f := func(txn1 interface{}) (interface{}, error) {
 		txn, ok := txn1.(kv.Transaction)
 		if !ok {
-			return nil, terror.ErrBackendType
+			return uint64(0), terror.ErrBackendType
 		}
 
 		for _, key := range keys {
 			if tidis.LazyCheck() {
 				if err := tidis.SdeleteIfExpired(nil, key); err != nil {
-					return 0, nil
+					return uint64(0), nil
 				}
 			}
 		}
@@ -652,22 +665,29 @@ func (tidis *Tidis) SopsStoreWithTxn(txn interface{}, opType int, dest []byte, k
 		// result is opSet
 		ssize, _, flag, err := tidis.sGetMeta(eDestMetaKey, nil, txn)
 		if err != nil {
-			return nil, err
+			return uint64(0), err
 		}
 		if flag == FDELETED {
 			tidis.AsyncDelAdd(TSETMETA, dest)
-			return nil, terror.ErrKeyBusy
+			return uint64(0), terror.ErrKeyBusy
 		}
 
 		// get result set from keys ops
 		mss, err := tidis.newSetsFromKeys(nil, txn, keys...)
 		if err != nil {
-			return nil, err
+			return uint64(0), err
 		}
 
 		var opSet mapset.Set
+		var i int
 
-		for i, ms1 := range mss {
+		for j, ms1 := range mss {
+			if j == 0 && ms1 == nil && opType == opDiff {
+				return uint64(0), nil
+			}
+			if ms1 == nil {
+				continue
+			}
 			ms := ms1.(mapset.Set)
 			if i == 0 {
 				opSet = ms
@@ -684,6 +704,7 @@ func (tidis *Tidis) SopsStoreWithTxn(txn interface{}, opType int, dest []byte, k
 					break
 				}
 			}
+			i++
 		}
 		if ssize != 0 {
 			// dest key exists, delete it first
@@ -691,8 +712,11 @@ func (tidis *Tidis) SopsStoreWithTxn(txn interface{}, opType int, dest []byte, k
 			startKey := SDataEncoder(dest, []byte(nil))
 			_, err = tidis.db.DeleteRangeWithTxn(startKey, nil, ssize, txn)
 			if err != nil {
-				return nil, err
+				return uint64(0), err
 			}
+		}
+		if opSet == nil || opSet.Cardinality() == 0 {
+			return uint64(0), nil
 		}
 
 		// save opset to new dest key
@@ -700,14 +724,14 @@ func (tidis *Tidis) SopsStoreWithTxn(txn interface{}, opType int, dest []byte, k
 			eDataKey := SDataEncoder(dest, []byte(member.(string)))
 			err = txn.Set(eDataKey, []byte{0})
 			if err != nil {
-				return nil, err
+				return uint64(0), err
 			}
 		}
 		// save dest meta key
 		eDestMetaValue := tidis.sGenMeta(uint64(opSet.Cardinality()), 0, FNORMAL)
 		err = txn.Set(eDestMetaKey, eDestMetaValue)
 		if err != nil {
-			return nil, err
+			return uint64(0), err
 		}
 
 		return uint64(opSet.Cardinality()), nil
