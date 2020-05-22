@@ -60,7 +60,8 @@ func (ch *ttlChecker) Run() {
 
 				var loops int
 
-				ss := txn.GetSnapshot()
+				ss, _ := ch.tdb.db.GetSnapshotFromTxn(txn).(kv.Snapshot)
+
 				// create iterater
 				it, err := ti.NewIterator(startKey, endKey, ss, false)
 				if err != nil {
@@ -122,7 +123,7 @@ func (ch *ttlChecker) Run() {
 
 				var loops int
 
-				ss := txn.GetSnapshot()
+				ss, _ := ch.tdb.db.GetSnapshotFromTxn(txn).(kv.Snapshot)
 
 				it, err := ti.NewIterator(startKey, endKey, ss, false)
 				if err != nil {
@@ -182,7 +183,7 @@ func (ch *ttlChecker) Run() {
 
 				var loops int
 
-				ss := txn.GetSnapshot()
+				ss, _ := ch.tdb.db.GetSnapshotFromTxn(txn).(kv.Snapshot)
 
 				it, err := ti.NewIterator(startKey, endKey, ss, false)
 				if err != nil {
@@ -242,7 +243,7 @@ func (ch *ttlChecker) Run() {
 
 				var loops int
 
-				ss := txn.GetSnapshot()
+				ss, _ := ch.tdb.db.GetSnapshotFromTxn(txn).(kv.Snapshot)
 
 				it, err := ti.NewIterator(startKey, endKey, ss, false)
 				if err != nil {
@@ -267,7 +268,7 @@ func (ch *ttlChecker) Run() {
 						return 0, err
 					}
 					// delete entire user key
-					if _, err = ch.tdb.SclearKeyWithTxn(txn1, key, &flagFalse, true); err != nil {
+					if _, err = ch.tdb.SclearKeyWithTxn(txn1, key, &flagFalse, false); err != nil {
 						return 0, err
 					}
 
@@ -301,7 +302,7 @@ func (ch *ttlChecker) Run() {
 
 				var loops int
 
-				ss := txn.GetSnapshot()
+				ss, _ := ch.tdb.db.GetSnapshotFromTxn(txn).(kv.Snapshot)
 
 				it, err := ti.NewIterator(startKey, endKey, ss, false)
 				if err != nil {
